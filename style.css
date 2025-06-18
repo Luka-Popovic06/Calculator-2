@@ -2,3 +2,15 @@
   margin: 0;
   padding: 0;
 }
+body {
+  justify-items: center;
+  font-family: sans-serif;
+}
+.container {
+  background-color: gray;
+  width: 420px;
+  height: 600px;
+  border-radius: 20px;
+  margin: 70px;
+  padding: 20px;
+}
