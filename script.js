@@ -24,3 +24,14 @@ buttons.addEventListener('click', function (e) {
     console.log(Number(finaleNumber));
   }
 });
+function calculation(a, operatio, b) {
+  if (operatio === '+') {
+    finaleNumber = a + b;
+  } else if (operatio === '-') {
+    finaleNumber = a - b;
+  } else if (operatio === '*') {
+    finaleNumber = a * b;
+  } else if (operatio === '/') {
+    finaleNumber = a / b;
+  }
+}
