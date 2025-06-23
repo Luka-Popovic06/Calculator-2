@@ -35,6 +35,17 @@ function outputLogic() {
     calculation(Number(finaleNumber), secondaryOperation, Number(numberTwo));
     outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
   }
+  if (logikaIzvrsena === true) {
+    if (numberOne && numberTwo && operation) {
+      calculation(Number(numberOne), secondaryOperation, Number(numberTwo));
+      logikaIzvrsena = false;
+      numberOne = finaleNumber;
+      numberTwo = '';
+      outputMain.textContent = '';
+      outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
+      outputLogic();
+    }
+  }
 }
 function calculation(a, operatio, b) {
   if (operatio === '+') {
