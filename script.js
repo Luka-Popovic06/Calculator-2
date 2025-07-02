@@ -73,3 +73,23 @@ function calculation(a, operatio, b) {
     finaleNumber = a / b;
   }
 }
+
+function chooseNumber(e) {
+  if (choosingNumberOne === false) {
+    if (UseOperation === '') {
+      if (brojevi.length <= 15) {
+        brojevi.push(e);
+        numberOne = brojevi.join('');
+        outputMain.textContent = numberOne;
+      }
+    }
+  } else if (choosingNumberOne === true) {
+    if (UseOperation === '') {
+      if (brojeviTwo.length <= 15) {
+        brojeviTwo.push(e);
+        numberTwo = brojeviTwo.join('');
+        outputMain.textContent = numberTwo;
+      }
+    }
+  }
+}
