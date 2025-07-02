@@ -93,3 +93,15 @@ function chooseNumber(e) {
     }
   }
 }
+function resetCalc() {
+  numberOne = finaleNumber;
+  numberTwo = '';
+  operation = '';
+  UseOperation = '';
+  choosingNumberOne = false;
+  logikaIzvrsena = false;
+  brojevi = [];
+  brojeviTwo = [];
+  outputSecondary.textContent = '';
+  secondaryOperation = '';
+}
