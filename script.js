@@ -4,14 +4,18 @@ const outputSecondary = document.querySelector('.output-secondary');
 const outputMain = document.querySelector('.output-main');
 let numberOne;
 let numberTwo;
-let operation;
+let operation = '';
+let UseOperation = '';
 let finaleNumber;
+let combineNumber;
 let choosingNumberOne = false;
 let secondaryOperation = '';
 let logikaIzvrsena = false;
+let brojevi = [];
+let brojeviTwo = [];
 buttons.addEventListener('click', function (e) {
   if (e.target.closest('.btn-number')) {
-    biranjeBroaj(e.target.value);
+    chooseNumber(e.target.value);
   } else if (e.target.closest('.btn-operation')) {
     operation = e.target.value;
 
@@ -22,6 +26,9 @@ buttons.addEventListener('click', function (e) {
     calculation(Number(numberOne), operation, Number(numberTwo));
     outputMain.textContent = Number(finaleNumber);
     outputSecondary.textContent = '';
+    resetCalc();
+  } else if (e.target.closest('.btn-dot')) {
+    chooseNumber(e.target.value);
   }
 });
 function outputLogic() {
@@ -30,7 +37,15 @@ function outputLogic() {
     outputSecondary.textContent = `${numberOne} ${operation}`;
     logikaIzvrsena = true;
     secondaryOperation = operation;
-    choosingNumberOne = true;
+    if (operation === '') {
+      choosingNumberOne = true;
+    } else if (['/', '*', '+', '-', '='].includes(operation)) {
+      brojeviTwo = [];
+      brojevi = [];
+      choosingNumberOne = true;
+      outputMain.textContent = '';
+      UseOperation = '';
+    }
   } else if (finaleNumber) {
     calculation(Number(finaleNumber), secondaryOperation, Number(numberTwo));
     outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
@@ -58,23 +73,3 @@ function calculation(a, operatio, b) {
     finaleNumber = a / b;
   }
 }
-
-function biranjeBroaj(e) {
-  if (choosingNumberOne === false) {
-    numberOne = e;
-    choosingNumberOne = true;
-    outputMain.textContent = numberOne;
-  } else if (choosingNumberOne === true) {
-    numberTwo = e;
-    choosingNumberOne = false;
-    outputMain.textContent = numberTwo;
-  }
-}
-/*if (numberOne && numberTwo && operation) {
-  // Izračunaj prethodnu operaciju
-  calculation(Number(numberOne), operation, Number(numberTwo));
-  //numberOne = String(finaleNumber);
-  numberTwo = '';
-  outputMain.textContent = '';
-  outputSecondary.textContent = `${finaleNumber} ${e.target.value}`;
-}*/
