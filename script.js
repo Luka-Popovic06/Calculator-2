@@ -2,19 +2,17 @@
 const buttons = document.querySelector('.buttons');
 const outputSecondary = document.querySelector('.output-secondary');
 const outputMain = document.querySelector('.output-main');
-const btnClear = document.querySelector('.btn-clear');
-const btnDelete = document.querySelector('.btn-delete');
 let numberOne;
 let numberTwo;
 let operation = '';
 let UseOperation = '';
-let finaleNumber;
+let finaleNumber = '';
 let combineNumber;
 let choosingNumberOne = false;
 let secondaryOperation = '';
-let logikaIzvrsena = false;
-let brojevi = [];
-let brojeviTwo = [];
+let logic = false;
+let firstNumbersArray = [];
+let secondNumbersArray = [];
 //
 buttons.addEventListener('click', function (e) {
   if (e.target.closest('.btn-number')) {
@@ -31,17 +29,18 @@ buttons.addEventListener('click', function (e) {
     resetCalcEqual();
   } else if (e.target.closest('.btn-dot')) {
     chooseNumber(e.target.value);
+  } else if (e.target.closest('.btn-clear')) {
+    reset();
+  } else if (e.target.closest('.btn-delete')) {
+    deletingNumber();
   }
 });
 //
-btnClear.addEventListener('click', function () {
-  reset();
-});
 function outputLogic() {
-  if (logikaIzvrsena === false) {
+  if (logic === false) {
     outputMain.textContent = numberTwo;
     outputSecondary.textContent = `${numberOne} ${operation}`;
-    logikaIzvrsena = true;
+    logic = true;
     secondaryOperation = operation;
     if (operation === '') {
       choosingNumberOne = true;
@@ -56,10 +55,10 @@ function outputLogic() {
     calculation(Number(finaleNumber), secondaryOperation, Number(numberTwo));
     outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
   }
-  if (logikaIzvrsena === true) {
+  if (logic === true) {
     if (numberOne && numberTwo && operation) {
       calculation(Number(numberOne), secondaryOperation, Number(numberTwo));
-      logikaIzvrsena = false;
+      logic = false;
       numberOne = finaleNumber;
       numberTwo = '';
       outputMain.textContent = '';
@@ -83,17 +82,17 @@ function calculation(a, operatio, b) {
 function chooseNumber(e) {
   if (choosingNumberOne === false) {
     if (UseOperation === '') {
-      if (brojevi.length <= 15) {
-        brojevi.push(e);
-        numberOne = brojevi.join('');
+      if (firstNumbersArray.length <= 15) {
+        firstNumbersArray.push(e);
+        numberOne = firstNumbersArray.join('');
         outputMain.textContent = numberOne;
       }
     }
   } else if (choosingNumberOne === true) {
     if (UseOperation === '') {
-      if (brojeviTwo.length <= 15) {
-        brojeviTwo.push(e);
-        numberTwo = brojeviTwo.join('');
+      if (secondNumbersArray.length <= 15) {
+        secondNumbersArray.push(e);
+        numberTwo = secondNumbersArray.join('');
         outputMain.textContent = numberTwo;
       }
     }
@@ -105,9 +104,9 @@ function resetCalcEqual() {
   operation = '';
   UseOperation = '';
   choosingNumberOne = false;
-  logikaIzvrsena = false;
-  brojevi = [];
-  brojeviTwo = [];
+  logic = false;
+  firstNumbersArray = [];
+  secondNumbersArray = [];
   outputSecondary.textContent = '';
   secondaryOperation = '';
 }
@@ -117,12 +116,23 @@ function reset() {
   operation = '';
   UseOperation = '';
   choosingNumberOne = false;
-  logikaIzvrsena = false;
-  brojevi = [];
-  brojeviTwo = [];
+  logic = false;
+  firstNumbersArray = [];
+  secondNumbersArray = [];
   outputSecondary.textContent = '';
   outputMain.textContent = '';
   secondaryOperation = '';
   finaleNumber = '';
   combineNumber = '';
+}
+function deletingNumber() {
+  if (choosingNumberOne === false) {
+    firstNumbersArray.pop();
+    numberOne = firstNumbersArray.join('');
+    outputMain.textContent = numberOne;
+  } else if (choosingNumberOne === true) {
+    secondNumbersArray.pop();
+    numberTwo = secondNumbersArray.join('');
+    outputMain.textContent = numberTwo;
+  }
 }
