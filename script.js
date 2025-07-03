@@ -2,6 +2,8 @@
 const buttons = document.querySelector('.buttons');
 const outputSecondary = document.querySelector('.output-secondary');
 const outputMain = document.querySelector('.output-main');
+const btnClear = document.querySelector('.btn-clear');
+const btnDelete = document.querySelector('.btn-delete');
 let numberOne;
 let numberTwo;
 let operation = '';
@@ -13,12 +15,12 @@ let secondaryOperation = '';
 let logikaIzvrsena = false;
 let brojevi = [];
 let brojeviTwo = [];
+//
 buttons.addEventListener('click', function (e) {
   if (e.target.closest('.btn-number')) {
     chooseNumber(e.target.value);
   } else if (e.target.closest('.btn-operation')) {
     operation = e.target.value;
-
     if (numberOne && operation) {
       outputLogic();
     }
@@ -26,10 +28,14 @@ buttons.addEventListener('click', function (e) {
     calculation(Number(numberOne), operation, Number(numberTwo));
     outputMain.textContent = Number(finaleNumber);
     outputSecondary.textContent = '';
-    resetCalc();
+    resetCalcEqual();
   } else if (e.target.closest('.btn-dot')) {
     chooseNumber(e.target.value);
   }
+});
+//
+btnClear.addEventListener('click', function () {
+  reset();
 });
 function outputLogic() {
   if (logikaIzvrsena === false) {
@@ -93,7 +99,7 @@ function chooseNumber(e) {
     }
   }
 }
-function resetCalc() {
+function resetCalcEqual() {
   numberOne = finaleNumber;
   numberTwo = '';
   operation = '';
@@ -104,4 +110,19 @@ function resetCalc() {
   brojeviTwo = [];
   outputSecondary.textContent = '';
   secondaryOperation = '';
+}
+function reset() {
+  numberOne = '';
+  numberTwo = '';
+  operation = '';
+  UseOperation = '';
+  choosingNumberOne = false;
+  logikaIzvrsena = false;
+  brojevi = [];
+  brojeviTwo = [];
+  outputSecondary.textContent = '';
+  outputMain.textContent = '';
+  secondaryOperation = '';
+  finaleNumber = '';
+  combineNumber = '';
 }
