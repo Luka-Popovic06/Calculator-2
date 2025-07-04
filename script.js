@@ -26,7 +26,20 @@ btnOperation.forEach(function (operationes) {
   });
 });
 //
-
+btnEqual.addEventListener('click', function () {
+  if (firstNumber && saveOperation && secondNumber) {
+    calculation(Number(secondNumber), saveOperation, Number(firstNumber));
+    outputMain.textContent = secondNumber;
+    outputSecondary.textContent = '';
+    firstNumber = secondNumber;
+    secondNumber = '';
+  } else {
+    outputMain.textContent = secondNumber;
+    outputSecondary.textContent = '';
+    firstNumber = secondNumber;
+    secondNumber = '';
+  }
+});
 //
 btnClear.addEventListener('click', function () {
   reset();
