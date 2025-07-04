@@ -1,138 +1,80 @@
 'use strict';
-const buttons = document.querySelector('.buttons');
+const btnNumbers = document.querySelectorAll('.btn-number');
+const btnOperation = document.querySelectorAll('.btn-operation');
 const outputSecondary = document.querySelector('.output-secondary');
 const outputMain = document.querySelector('.output-main');
-let numberOne;
-let numberTwo;
-let operation = '';
-let UseOperation = '';
-let finaleNumber = '';
-let combineNumber;
-let choosingNumberOne = false;
-let secondaryOperation = '';
-let logic = false;
-let firstNumbersArray = [];
-let secondNumbersArray = [];
+const btnEqual = document.querySelector('.btn-equal');
+const btnClear = document.querySelector('.btn-clear');
+const btnDelete = document.querySelector('.btn-delete');
 //
-buttons.addEventListener('click', function (e) {
-  if (e.target.closest('.btn-number')) {
-    chooseNumber(e.target.value);
-  } else if (e.target.closest('.btn-operation')) {
-    operation = e.target.value;
-    if (numberOne && operation) {
-      outputLogic();
-    }
-  } else if (e.target.closest('.btn-equal')) {
-    calculation(Number(numberOne), operation, Number(numberTwo));
-    outputMain.textContent = Number(finaleNumber);
-    outputSecondary.textContent = '';
-    resetCalcEqual();
-  } else if (e.target.closest('.btn-dot')) {
-    chooseNumber(e.target.value);
-  } else if (e.target.closest('.btn-clear')) {
-    reset();
-  } else if (e.target.closest('.btn-delete')) {
-    deletingNumber();
-  }
+let firstNumber = '';
+let secondNumber = '';
+let operation = '';
+let saveOperation;
+let resolt;
+//
+btnNumbers.forEach(function (number) {
+  number.addEventListener('click', function () {
+    textOutputLogic(number);
+  });
 });
 //
-function outputLogic() {
-  if (logic === false) {
-    outputMain.textContent = numberTwo;
-    outputSecondary.textContent = `${numberOne} ${operation}`;
-    logic = true;
-    secondaryOperation = operation;
-    if (operation === '') {
-      choosingNumberOne = true;
-    } else if (['/', '*', '+', '-', '='].includes(operation)) {
-      brojeviTwo = [];
-      brojevi = [];
-      choosingNumberOne = true;
-      outputMain.textContent = '';
-      UseOperation = '';
-    }
-  } else if (finaleNumber) {
-    calculation(Number(finaleNumber), secondaryOperation, Number(numberTwo));
-    outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
-  }
-  if (logic === true) {
-    if (numberOne && numberTwo && operation) {
-      calculation(Number(numberOne), secondaryOperation, Number(numberTwo));
-      logic = false;
-      numberOne = finaleNumber;
-      numberTwo = '';
-      outputMain.textContent = '';
-      outputSecondary.textContent = `${finaleNumber} ${secondaryOperation}`;
-      outputLogic();
-    }
-  }
-}
-function calculation(a, operatio, b) {
-  if (operatio === '+') {
-    finaleNumber = a + b;
-  } else if (operatio === '-') {
-    finaleNumber = a - b;
-  } else if (operatio === '*') {
-    finaleNumber = a * b;
-  } else if (operatio === '/') {
-    finaleNumber = a / b;
+btnOperation.forEach(function (operationes) {
+  operationes.addEventListener('click', function (e) {
+    operation = e.target.textContent;
+    textOutputLogic();
+  });
+});
+//
+
+//
+btnClear.addEventListener('click', function () {
+  reset();
+});
+//
+btnDelete.addEventListener('click', function () {
+  firstNumber = firstNumber.slice(0, -1);
+  outputMain.textContent = firstNumber;
+});
+
+function textOutputLogic(number) {
+  if (operation === '') {
+    firstNumber += number.textContent;
+    outputMain.textContent = firstNumber;
+  } else if (!secondNumber) {
+    outputMain.textContent = '';
+    secondNumber = firstNumber;
+    outputSecondary.textContent = `${secondNumber}  ${operation}`;
+    saveOperation = operation;
+    operation = '';
+    firstNumber = '';
+  } else if (firstNumber && saveOperation && secondNumber) {
+    calculation(Number(secondNumber), saveOperation, Number(firstNumber));
+    outputSecondary.textContent = `${secondNumber}  ${operation}`;
+    saveOperation = operation;
+    operation = '';
+    firstNumber = '';
+    outputMain.textContent = '';
   }
 }
 
-function chooseNumber(e) {
-  if (choosingNumberOne === false) {
-    if (UseOperation === '') {
-      if (firstNumbersArray.length <= 15) {
-        firstNumbersArray.push(e);
-        numberOne = firstNumbersArray.join('');
-        outputMain.textContent = numberOne;
-      }
-    }
-  } else if (choosingNumberOne === true) {
-    if (UseOperation === '') {
-      if (secondNumbersArray.length <= 15) {
-        secondNumbersArray.push(e);
-        numberTwo = secondNumbersArray.join('');
-        outputMain.textContent = numberTwo;
-      }
-    }
+function calculation(a, operatio, b) {
+  if (operatio === '+') {
+    secondNumber = a + b;
+  } else if (operatio === '-') {
+    secondNumber = a - b;
+  } else if (operatio === '*') {
+    secondNumber = a * b;
+  } else if (operatio === '/') {
+    secondNumber = a / b;
   }
 }
-function resetCalcEqual() {
-  numberOne = finaleNumber;
-  numberTwo = '';
-  operation = '';
-  UseOperation = '';
-  choosingNumberOne = false;
-  logic = false;
-  firstNumbersArray = [];
-  secondNumbersArray = [];
-  outputSecondary.textContent = '';
-  secondaryOperation = '';
-}
+
 function reset() {
-  numberOne = '';
-  numberTwo = '';
+  firstNumber = '';
+  secondNumber = '';
   operation = '';
-  UseOperation = '';
-  choosingNumberOne = false;
-  logic = false;
-  firstNumbersArray = [];
-  secondNumbersArray = [];
+  saveOperation = '';
   outputSecondary.textContent = '';
   outputMain.textContent = '';
-  secondaryOperation = '';
-  finaleNumber = '';
-  combineNumber = '';
-}
-function deletingNumber() {
-  if (choosingNumberOne === false) {
-    firstNumbersArray.pop();
-    numberOne = firstNumbersArray.join('');
-    outputMain.textContent = numberOne;
-  } else if (choosingNumberOne === true) {
-    secondNumbersArray.pop();
-    numberTwo = secondNumbersArray.join('');
-    outputMain.textContent = numberTwo;
-  }
 }
