@@ -87,7 +87,23 @@ function calculation(a, operatio, b) {
     divide(a, b);
   }
 }
-
+function add(a, b) {
+  secondNumber = a + b;
+}
+function subtract(a, b) {
+  secondNumber = a - b;
+}
+function multiply(a, b) {
+  secondNumber = a * b;
+}
+function divide(a, b) {
+  if (b !== 0) {
+    secondNumber = a / b;
+  } else {
+    alert("Can't divide by 0 !!!");
+    reset();
+  }
+}
 function reset() {
   firstNumber = '';
   secondNumber = '';
