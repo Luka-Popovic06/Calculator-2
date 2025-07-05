@@ -9,26 +9,40 @@ const btnDelete = document.querySelector('.btn-delete');
 //
 let firstNumber = '';
 let secondNumber = '';
-let operation = '';
-let saveOperation;
-let resolt;
+let curentOperation = '';
+let previousOperation;
 //
 btnNumbers.forEach(function (number) {
   number.addEventListener('click', function () {
-    textOutputLogic(number);
+    addToFirstNumber(number);
   });
 });
 //
 btnOperation.forEach(function (operationes) {
   operationes.addEventListener('click', function (e) {
-    operation = e.target.textContent;
-    textOutputLogic();
+    curentOperation = e.target.textContent;
+
+    if (!secondNumber) {
+      outputMain.textContent = '';
+      secondNumber = firstNumber;
+      outputSecondary.textContent = `${secondNumber}  ${curentOperation}`;
+      previousOperation = curentOperation;
+      curentOperation = '';
+      firstNumber = '';
+    } else if (firstNumber && previousOperation && secondNumber) {
+      calculation(Number(secondNumber), previousOperation, Number(firstNumber));
+      outputSecondary.textContent = `${secondNumber}  ${curentOperation}`;
+      previousOperation = curentOperation;
+      curentOperation = '';
+      firstNumber = '';
+      outputMain.textContent = '';
+    }
   });
 });
 //
 btnEqual.addEventListener('click', function () {
-  if (firstNumber && saveOperation && secondNumber) {
-    calculation(Number(secondNumber), saveOperation, Number(firstNumber));
+  if (firstNumber && previousOperation && secondNumber) {
+    calculation(Number(secondNumber), previousOperation, Number(firstNumber));
     outputMain.textContent = secondNumber;
     outputSecondary.textContent = '';
     firstNumber = secondNumber;
@@ -49,45 +63,36 @@ btnDelete.addEventListener('click', function () {
   firstNumber = firstNumber.slice(0, -1);
   outputMain.textContent = firstNumber;
 });
-
-function textOutputLogic(number) {
-  if (operation === '') {
+function addToFirstNumber(number) {
+  if (number.textContent === '.' && firstNumber.includes('.')) {
+    outputMain.textContent = firstNumber;
+    return;
+  } else if (number.textContent === '.' && firstNumber.length === 0) {
+    outputMain.textContent = firstNumber;
+    return;
+  } else {
     firstNumber += number.textContent;
     outputMain.textContent = firstNumber;
-  } else if (!secondNumber) {
-    outputMain.textContent = '';
-    secondNumber = firstNumber;
-    outputSecondary.textContent = `${secondNumber}  ${operation}`;
-    saveOperation = operation;
-    operation = '';
-    firstNumber = '';
-  } else if (firstNumber && saveOperation && secondNumber) {
-    calculation(Number(secondNumber), saveOperation, Number(firstNumber));
-    outputSecondary.textContent = `${secondNumber}  ${operation}`;
-    saveOperation = operation;
-    operation = '';
-    firstNumber = '';
-    outputMain.textContent = '';
   }
 }
 
 function calculation(a, operatio, b) {
   if (operatio === '+') {
-    secondNumber = a + b;
+    add(a, b);
   } else if (operatio === '-') {
-    secondNumber = a - b;
+    subtract(a, b);
   } else if (operatio === '*') {
-    secondNumber = a * b;
+    multiply(a, b);
   } else if (operatio === '/') {
-    secondNumber = a / b;
+    divide(a, b);
   }
 }
 
 function reset() {
   firstNumber = '';
   secondNumber = '';
-  operation = '';
-  saveOperation = '';
+  curentOperation = '';
+  previousOperation = '';
   outputSecondary.textContent = '';
   outputMain.textContent = '';
 }
